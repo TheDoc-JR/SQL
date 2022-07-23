@@ -1,0 +1,18 @@
+SELECT
+High.ID,
+High.Name
+FROM (SELECT
+S.hacker_id AS ID,
+H.name AS Name,
+COUNT(S.challenge_id) AS Challenges
+FROM Submissions S
+JOIN Challenges C
+JOIN Difficulty D
+JOIN Hackers H
+ON S.challenge_id = C.challenge_id
+AND C.difficulty_level = D.difficulty_level
+AND S.hacker_id = H.hacker_id
+WHERE S.score = D.score
+GROUP BY ID, Name
+HAVING Challenges > 1) AS High
+ORDER BY Challenges DESC, ID ASC;
